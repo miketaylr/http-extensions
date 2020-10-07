@@ -1271,14 +1271,14 @@ Internet-Draft               Digest Headers                 October 2020
 
 12.9.  Algorithm Agility
 
+   ...
+
 13.  IANA Considerations
 
 13.1.  Establish the HTTP Digest Algorithm Values
 
    This memo sets this spec to be the establishing document for the HTTP
    Digest Algorithm Values [3]
-
-
 
 
 
