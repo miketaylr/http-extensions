@@ -126,7 +126,7 @@ Internet-Draft               Digest Headers                 October 2020
      12.6.  Usage in signatures  . . . . . . . . . . . . . . . . . .  22
      12.7.  Usage in trailers  . . . . . . . . . . . . . . . . . . .  23
      12.8.  Usage with encryption  . . . . . . . . . . . . . . . . .  23
-     12.9.  Parameterising digest-algorithms . . . . . . . . . . . .  23
+     12.9.  Algorithm Agility  . . . . . . . . . . . . . . . . . . .  23
    13. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  23
      13.1.  Establish the HTTP Digest Algorithm Values . . . . . . .  23
      13.2.  The "status" Field in the HTTP Digest Algorithm Values .  24
@@ -1269,7 +1269,7 @@ Internet-Draft               Digest Headers                 October 2020
    the use of the "id-sha-256" digest-algorithm in conjuction with the
    encrypted content-coding [RFC8188].
 
-12.9.  Parameterising digest-algorithms
+12.9.  Algorithm Agility
 
 13.  IANA Considerations
 
