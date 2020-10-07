@@ -424,10 +424,10 @@ Internet-Draft            Signing HTTP Messages             October 2020
 
 2.1.  HTTP Header Fields
 
-   An HTTP header field is identified by its header field name.  While
-   HTTP header field names are case-insensitive, implementations MUST
-   use lowercased field names (e.g., "content-type", "date", "etag")
-   when using them as content identifiers.
+   An HTTP header field value is identified by its header field name.
+   While HTTP header field names are case-insensitive, implementations
+   SHOULD use lowercased field names (e.g., "content-type", "date",
+   "etag") when using them as content identifiers.
 
    An HTTP header field value is canonicalized as follows:
 
@@ -660,12 +660,12 @@ Internet-Draft            Signing HTTP Messages             October 2020
    5.  The signer creates an ordered list of content identifiers
        representing the message content and signature metadata to be
        covered by the signature, and assigns this list as the
-       signature's Covered Content.
-
-       *  Each identifier MUST be one of those defined in Section 2.
-
-       *  This list MUST NOT be empty, as this would result in creating
-          a signature over the empty string.
+       signature's Covered Content.  Each identifier MUST be one of
+       those defined in Section 2.  This list MUST NOT be empty, as this
+       would result in creating a signature over the empty string.  If
+       the signature's Algorithm name does not start with rsa, hmac, or
+       ecdsa, signers SHOULD include (created) and (request-target) in
+       the list.  If the signature's Algorithm starts with rsa, hmac, or
 
 
 
@@ -674,23 +674,17 @@ Backman, et al.          Expires April 10, 2021                [Page 12]
 Internet-Draft            Signing HTTP Messages             October 2020
 
 
-       *  If the signature's Algorithm name does not start with rsa,
-          hmac, or ecdsa, signers SHOULD include (created) and (request-
-          target) in the list.
-
-       *  If the signature's Algorithm starts with rsa, hmac, or ecdsa,
-          signers SHOULD include date and (request-target) in the list.
-
-       *  Further guidance on what to include in this list and in what
-          order is out of scope for this document.  However, the list
-          order is significant and once established for a given
-          signature it MUST be preserved for that signature.
+       ecdsa, signers SHOULD include date and (request-target) in the
+       list.  Further guidance on what to include in this list and in
+       what order is out of scope for this document.  However, the list
+       order is significant and once established for a given signature
+       it MUST be preserved for that signature.
 
    For example, given the following HTTP message:
 
    GET /foo HTTP/1.1
    Host: example.org
-   Date: Sat, 07 Jun 2014 20:51:35 GMT
+   Date: Tue, 07 Jun 2014 20:51:35 GMT
    X-Example: Example header
            with some whitespace.
    X-EmptyHeader:
@@ -706,8 +700,9 @@ Internet-Draft            Signing HTTP Messages             October 2020
    | Algorithm      | "rsa-256"                                        |
    | Covered        | "(request-target)", "(created)", "host", "date", |
    | Content        | "cache-contol", "x-emptyheader", "x-example"     |
-   | Creation Time  | "1402174295"                                     |
-   | Expiration     | "1402174595"                                     |
+   | Creation Time  | Equal to the value specified in the "Date"       |
+   |                | header field.                                    |
+   | Expiration     | Equal to the Creation Time plus five minutes.    |
    | Time           |                                                  |
    | Verification   | The public key provided in  and identified by    |
    | Key Material   | the "keyId" value "test-key-b".                  |
@@ -722,6 +717,11 @@ Internet-Draft            Signing HTTP Messages             October 2020
    entries for each identifier in the signature's Covered Content in the
    order it occurs in the list, with each entry separated by a newline
    ""\n"".  An identifier's entry is a US-ASCII string consisting of the
+   lowercased identifier followed with a colon "":"", a space "" "", and
+   the identifier's canonicalized value (described below).
+
+
+
 
 
 
@@ -729,9 +729,6 @@ Backman, et al.          Expires April 10, 2021                [Page 13]
 
 Internet-Draft            Signing HTTP Messages             October 2020
 
-
-   lowercased identifier followed with a colon "":"", a space "" "", and
-   the identifier's canonicalized value (described below).
 
    If Covered Content contains "(created)" and the signature's Creation
    Time is undefined or the signature's Algorithm name starts with
@@ -776,6 +773,9 @@ Internet-Draft            Signing HTTP Messages             October 2020
    Xsqeax/WaHyRYOgaW6krxEGVaBQAfA2czYZhEA05Tb38ahq/gwDQ1bagd9rGnCHtAg==
 
               Figure 2: Non-normative example signature value
+
+
+
 
 
 
@@ -2042,17 +2042,6 @@ Document History
 
    o  draft-ietf-httpbis-message-signatures
 
-      *  -01
-
-         +  Strengthened requirement for content identifiers for header
-            fields to be lower-case (changed from SHOULD to MUST).
-
-         +  Relaxed guidance on processing Creation Time and Expiration
-            Time to only require verifiers to examine them and test
-            against the verifier's requirements.
-
-         +  Minor editorial corrections and readability improvements.
-
       *  -00
 
          +  Initialized from draft-richanna-http-message-signatures-00,
@@ -2065,15 +2054,6 @@ Document History
          +  Converted to xml2rfc v3 and reformatted to comply with RFC
             style guides.
 
-
-
-
-
-Backman, et al.          Expires April 10, 2021                [Page 37]
-
-Internet-Draft            Signing HTTP Messages             October 2020
-
-
          +  Removed Signature auth-scheme definition and related
             content.
 
@@ -2084,6 +2064,15 @@ Internet-Draft            Signing HTTP Messages             October 2020
 
          +  Rewrote abstract and introduction to explain context and
             need, and challenges inherent in signing HTTP messages.
+
+
+
+
+
+Backman, et al.          Expires April 10, 2021                [Page 37]
+
+Internet-Draft            Signing HTTP Messages             October 2020
+
 
          +  Rewrote and heavily expanded algorithm definition, retaining
             normative requirements.
@@ -2122,19 +2111,23 @@ Authors' Addresses
    URI:   https://www.amazon.com/
 
 
+   Justin Richer
+   Bespoke Engineering
+
+   Email: ietf@justin.richer.org
+   URI:   https://bspk.io/
+
+
+
+
+
+
 
 
 
 Backman, et al.          Expires April 10, 2021                [Page 38]
 
 Internet-Draft            Signing HTTP Messages             October 2020
-
-
-   Justin Richer
-   Bespoke Engineering
-
-   Email: ietf@justin.richer.org
-   URI:   https://bspk.io/
 
 
    Manu Sporny
@@ -2145,6 +2138,13 @@ Internet-Draft            Signing HTTP Messages             October 2020
 
    Email: msporny@digitalbazaar.com
    URI:   https://manu.sporny.org/
+
+
+
+
+
+
+
 
 
 
