@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-10-06T00:16:52.988075+00:00",
+  "timestamp": "2020-10-08T00:16:48.496886+00:00",
   "repo": "httpwg/http-extensions",
   "labels": [
     {
@@ -21682,7 +21682,7 @@
       ],
       "body": "## I expect\r\n\r\nThis spec either:\r\n\r\n* to provide an RFC3230 compatible example of digest-algorithm with parameters;\r\n* explicitly drop parameters because they are not widely used and augment the attack surface;\r\n\r\nRFC3230 stated that:\r\n\r\n```\r\n   For some algorithms, one or more parameters may be\r\n   supplied.\r\n\r\n      digest-algorithm = token\r\n\r\n   The BNF for \"parameter\" is as is used in RFC 2616 [4].  All digest-\r\n   algorithm values are case-insensitive.\r\n```\r\n\r\nbut:\r\n\r\n- provided no example of parameterized algorithms\r\n\r\nIn this draft we *preserved that sentence* but:\r\n\r\n- still did not provide an example of parameterized algorithm;\r\n- still did not update the reference to BNF to the latest http spec.\r\n\r\nIn #1213 there's a possible fix to support parameters, like the following\r\n\r\n```\r\nDigest: myhash=dcRDgR2GM35DluAV13PzgnG6+pvQwPywfFvAu1UeFrs=; param1=40\r\n\r\n```\r\n\r\n## Notes\r\n\r\nUse cases are parametrizable digest-algorithms like mi-sha256.\r\n\r\nAnother solution could be to *deprecate* field parameters in digest: parameters could still be adopted serializing them in the digest-value, and leaving the specification/serialization to the definition of the digest-algorithm. eg:\r\n```\r\nDigest: myhash=40/dcRDgR2GM35DluAV13PzgnG6+pvQwPywfFvAu1UeFrs\r\n```",
       "createdAt": "2019-07-09T14:32:36Z",
-      "updatedAt": "2020-08-26T13:00:07Z",
+      "updatedAt": "2020-10-07T20:15:06Z",
       "closedAt": null,
       "comments": [
         {
@@ -21747,6 +21747,13 @@
           "body": "Mailing list thread: https://lists.w3.org/Archives/Public/ietf-http-wg/2020JulSep/0092.html\r\n\r\n",
           "createdAt": "2020-08-26T13:00:07Z",
           "updatedAt": "2020-08-26T13:00:07Z"
+        },
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@reschke @mnot brief recap after discussion.\r\n\r\nWe propose to deprecate parameters because:\r\n\r\n* we were not able to find any implementation;\r\n* if they are used as an input parameter for validating the checksum, an attacker can use them to steer the validation process;\r\n\r\nThe proposal:\r\n- deprecate parameters (a receiver MUST ignore a checksum containing parameters)\r\n- suggests that digest-algorithms wishing parameterization, can encode parameters inside the checksum\r\n\r\nOT: I agree that making digest a SF would have resolved the issue with just some advice of not using parameters as input values when defining new digest-algorithms",
+          "createdAt": "2020-10-07T20:15:06Z",
+          "updatedAt": "2020-10-07T20:15:06Z"
         }
       ]
     },
@@ -29593,7 +29600,7 @@
     {
       "number": 1233,
       "id": "MDU6SXNzdWU2NjQ2NjE2NDQ=",
-      "title": "RFC 6265bis: Specify how non-HTTP cookies should be exposed to sites",
+      "title": "Specify how non-HTTP cookies should be exposed to sites",
       "url": "https://github.com/httpwg/http-extensions/issues/1233",
       "state": "OPEN",
       "author": "DCtheTall",
@@ -29604,7 +29611,7 @@
       ],
       "body": "Currently, 6265bis only really talks about storing cookies that come from non-HTTP sources (e.g. document.cookie, CookieStore), but there is nothing in the spec about what cookies should be included in non-HTTP reads except that HttpOnly cookies should be ignored.\r\n\r\nThis lack of guidance has led to some [disagreements between browsers](https://github.com/httpwg/http-extensions/issues/1163) about whether `SameSite=AnythingButNone` cookies should be accessible in cross-origin frames.\r\n\r\nI am opening this issue to start a discussion about whether non-HTTP cookie access is in scope of 6265bis, and if so, what changes should be made to the spec.",
       "createdAt": "2020-07-23T17:53:18Z",
-      "updatedAt": "2020-07-24T16:26:01Z",
+      "updatedAt": "2020-10-06T04:05:49Z",
       "closedAt": null,
       "comments": [
         {
@@ -29894,16 +29901,16 @@
       "labels": [
         "digest-headers"
       ],
-      "body": "## Tasks\r\n\r\n- [x] digest-algorithm lowercase #1253 \r\n- [ ] deprecate parameters and wait for feedback :) #1259 @LPardue \r\n- [x] clean up Representation Digest https://github.com/httpwg/http-extensions/pull/937#discussion_r472018411\r\n- [x] remove reference to \"validator fields\" if they are not used anymore\r\n- [x] consistent usage of backticks #1255 \r\n\r\n```\r\n`Digest` vs Digest vs \"Digest\"\r\n`digest-algorithms` vs digest-algoritms vs \"digest-algorithms\"\r\n```\r\n\r\n- [x] consistent usage of \"-\" #1256  \r\n\r\n```\r\ndigest-algorithms vs digest algorithms\r\n\r\n```\r\n\r\n- [x] consistent usage of lowercase digest-algorithms with double quote \"sha-256\" in text #1255\r\n\r\n- [ ] close #1139 and #1138  about old algorithms unless somebody comes with a proposal. @LPardue ",
+      "body": "## Tasks\r\n\r\n- [x] digest-algorithm lowercase #1253 \r\n- [ ] deprecate parameters and wait for feedback :) #1259 @LPardue \r\n- [ ] Algorithm agility\r\n- [x] clean up Representation Digest https://github.com/httpwg/http-extensions/pull/937#discussion_r472018411\r\n- [x] remove reference to \"validator fields\" if they are not used anymore\r\n- [x] consistent usage of backticks #1255 \r\n\r\n```\r\n`Digest` vs Digest vs \"Digest\"\r\n`digest-algorithms` vs digest-algoritms vs \"digest-algorithms\"\r\n```\r\n\r\n- [x] consistent usage of \"-\" #1256  \r\n\r\n```\r\ndigest-algorithms vs digest algorithms\r\n\r\n```\r\n\r\n- [x] consistent usage of lowercase digest-algorithms with double quote \"sha-256\" in text #1255\r\n\r\n- [ ] close #1139 and #1138  about old algorithms unless somebody comes with a proposal. @LPardue ",
       "createdAt": "2020-08-18T11:14:37Z",
-      "updatedAt": "2020-09-08T13:55:06Z",
+      "updatedAt": "2020-10-07T19:30:47Z",
       "closedAt": null,
       "comments": []
     },
     {
       "number": 1251,
       "id": "MDU6SXNzdWU2ODA5NjU1Mjk=",
-      "title": "[structured-fields] Inconsistent rules around whitespace",
+      "title": "Inconsistent rules around whitespace",
       "url": "https://github.com/httpwg/http-extensions/issues/1251",
       "state": "OPEN",
       "author": "zcorpan",
@@ -29914,7 +29921,7 @@
       ],
       "body": "https://httpwg.org/http-extensions/draft-ietf-httpbis-header-structure.html\r\n\r\nI found https://github.com/httpwg/http-extensions/pull/1173\r\n\r\nThe current grammar with both SP and OWS in different places. I don't quite understand the motivation for SP in some places instead of OWS everywhere. If OWS was allowed in some places for more robust parsing, wouldn't allowing OWS everywhere be more robust still?\r\n\r\nAlso, there are some places where no whitespace is allowed but maybe it should be. In particular, before the `;` in the parameters. Should whitespace be allowed there?\r\n\r\ncc @mnot",
       "createdAt": "2020-08-18T11:29:33Z",
-      "updatedAt": "2020-08-24T08:14:52Z",
+      "updatedAt": "2020-10-06T04:05:36Z",
       "closedAt": null,
       "comments": [
         {
@@ -30340,7 +30347,7 @@
     {
       "number": 1272,
       "id": "MDU6SXNzdWU3MDk2MzA4ODM=",
-      "title": "[client-hints] Unbalanced parentheses",
+      "title": "Unbalanced parentheses",
       "url": "https://github.com/httpwg/http-extensions/issues/1272",
       "state": "OPEN",
       "author": "triple-underscore",
@@ -30352,14 +30359,14 @@
       ],
       "body": "The following sentence in [HTTP Client Hints, section 4.1](https://httpwg.org/http-extensions/draft-ietf-httpbis-client-hints.html#information-exposure) has parentheses unbalanced, making it somewhat confusing.\r\n\r\n> The header-based opt-in means that removal of passive fingerprinting vectors is possible, such as the User-Agent string (enabling active access to that information through User-Agent Client Hints ([UA-CH]) or otherwise expose information already available through script (e.g., the Save-Data Client Hint), without increasing the passive fingerprinting surface.",
       "createdAt": "2020-09-26T23:26:33Z",
-      "updatedAt": "2020-09-27T00:43:51Z",
+      "updatedAt": "2020-10-06T04:05:19Z",
       "closedAt": null,
       "comments": []
     },
     {
       "number": 1273,
       "id": "MDU6SXNzdWU3MDk3NzM2OTI=",
-      "title": "[structured-headers] bnf for dict-member",
+      "title": "bnf for dict-member",
       "url": "https://github.com/httpwg/http-extensions/issues/1273",
       "state": "OPEN",
       "author": "Jxck",
@@ -30370,7 +30377,7 @@
       ],
       "body": "according to the current spec, `dict-member` is defined as\r\n\r\n```bnf\r\ndict-member = member-name [ \"=\" member-value ]\r\n```\r\n\r\nbut current test includes case like below as valid. [link to test](https://github.com/httpwg/structured-field-tests/blob/master/dictionary.json#L114-L117)\r\n\r\n```json\r\n    {\r\n        \"name\": \"missing value with params dictionary\",\r\n        \"raw\": [\"a=1, b;foo=9, c=3\"],\r\n        \"header_type\": \"dictionary\",\r\n        \"expected\": [[\"a\", [1, []]], [\"b\", [true, [[\"foo\", 9]]]], [\"c\", [3, []]]]\r\n    }\r\n```\r\n\r\n`b` 's member-value's are omitted, so `b` is implicitly `true` and it **has parameters** `foo=9` too.\r\n\r\nin my understand from BNF,  if `=` doesn't appear next to member-name, member name section are omitted.\r\n\r\nso if its should valid, BNF should be seems like this.\r\n\r\n```bnf\r\ndict-member = member-name [ ( \"=\" member-value) / parameters ]\r\n```\r\n",
       "createdAt": "2020-09-27T16:47:08Z",
-      "updatedAt": "2020-10-05T23:01:51Z",
+      "updatedAt": "2020-10-07T03:25:48Z",
       "closedAt": null,
       "comments": [
         {
@@ -30449,6 +30456,62 @@
           "body": "> \r\n> \r\n> > Implementations MUST have behavior that is indistinguishable from following the algorithms.\r\n> \r\n> One way to parse it is that one can use ABNF as long as it produces the right answer...\r\n\r\nSure, if the ABNF is correct. Which it, apparently, isn't (currently).",
           "createdAt": "2020-10-05T23:01:51Z",
           "updatedAt": "2020-10-05T23:01:51Z"
+        },
+        {
+          "author": "mnot",
+          "authorAssociation": "MEMBER",
+          "body": "@phluid61 no. RFC5234 s 3.5 recommends that grouping be used when an alternative consists of multiple rules or literals.",
+          "createdAt": "2020-10-06T03:12:55Z",
+          "updatedAt": "2020-10-06T03:12:55Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This is an area in which parentheses are critical.  In ABNF, concatenation (\" \") has higher precedence than alternation (\"/\"), so @phluid61 is correct to say that...\r\n\r\n```abnf\r\ndict-member    = member-name ( \"=\" member-value / parameters ) \r\n```\r\n\r\n... matches the tests.  This is what the other means:\r\n\r\n```abnf\r\ndict-member    = ( member-name \"=\" member-value ) / parameters\r\n```\r\n\r\nOf course, the original suggestion was probably even better in that it was more explicit.  Even though `[]` is unnecessary given that `parameters` can be empty.",
+          "createdAt": "2020-10-06T03:44:25Z",
+          "updatedAt": "2020-10-06T03:44:25Z"
+        },
+        {
+          "author": "mnot",
+          "authorAssociation": "MEMBER",
+          "body": "[RFC5234 s 3.10](https://tools.ietf.org/html/rfc5234#section-3.10), directly below the text that describes operator precedence:\r\n\r\n~~~\r\n   Use of the alternative operator, freely mixed with concatenations,\r\n   can be confusing.\r\n\r\n      Again, it is recommended that the grouping operator be used to\r\n      make explicit concatenation groups.\r\n~~~",
+          "createdAt": "2020-10-06T03:47:54Z",
+          "updatedAt": "2020-10-06T03:48:22Z"
+        },
+        {
+          "author": "Jxck",
+          "authorAssociation": "NONE",
+          "body": "> \"When parsing from HTTP fields, implementations MUST have behavior that is indistinguishable from following the algorithms. If there is disagreement between the parsing algorithms and ABNF, the specified algorithms take precedence.\"\r\n\r\nOh I missed this section. but I think spec should have correct ABNF which is equivalent with algorithms and implementer could implement parser automatically from ABNF instead of saying \"should not implement depend upon the ABNF\".",
+          "createdAt": "2020-10-06T04:19:31Z",
+          "updatedAt": "2020-10-06T04:19:31Z"
+        },
+        {
+          "author": "phluid61",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> \r\n> \r\n> @phluid61 no. RFC5234 s 3.5 recommends that grouping be used when an alternative consists of multiple rules or literals.\r\n\r\nOh, right, sorry I forgot that in ABNF concatenation has higher precedence than alternation. Ignore me.",
+          "createdAt": "2020-10-06T05:38:56Z",
+          "updatedAt": "2020-10-07T03:25:48Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Is the ABNF for production or consumption?  Because...\r\n\r\n>  Note that this requirement is only on serialisation; parsers are still required to correctly handle the true Boolean value when it appears in Dictionary values. \r\n\r\nWould suggest that the grammar a parser uses might be:\r\n\r\n```abnf\r\ndict-member    = member-name ( [ \"=\" sf-boolean ] parameters /  \"=\" member-value )\r\n```\r\n\r\nWhereas it appears that serialization needs to use the simpler:\r\n\r\n```abnf\r\ndict-member    = member-name ( parameters /  \"=\" member-value )\r\n```\r\n",
+          "createdAt": "2020-10-06T05:51:35Z",
+          "updatedAt": "2020-10-06T05:51:35Z"
+        },
+        {
+          "author": "phluid61",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yeah I'm confused again now. [RFC 5234, Section 3.5](https://tools.ietf.org/html/rfc5234#section-3.5) says:\r\n\r\n~~~text\r\n         elem (foo / bar) blat\r\n\r\n   matches (elem foo blat) or (elem bar blat), and\r\n\r\n         elem foo / bar blat\r\n\r\n   matches (elem foo) or (bar blat).\r\n~~~\r\n\r\nWhich means that\r\n\r\n~~~abnf\r\ndict-member = member-name ( \"=\" member-value ) / parameters\r\n~~~\r\n\r\nis equivalent to\r\n\r\n~~~abnf\r\ndict-member = ( member-name \"=\" member-value ) / parameters\r\n~~~\r\n\r\nWhich is how I read it originally, and how I'm pretty sure every other ABNF I've seen does it. (Even RFC 7230's definition of `quoted-pair`)",
+          "createdAt": "2020-10-06T07:18:50Z",
+          "updatedAt": "2020-10-06T07:18:50Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "That is a correct reading.  Hence my suggestion above (and the different ordering).",
+          "createdAt": "2020-10-07T00:16:17Z",
+          "updatedAt": "2020-10-07T00:16:17Z"
         }
       ]
     },
@@ -30466,7 +30529,7 @@
       ],
       "body": "Extensible priority scheme is an extension which server might not choose to implement. However, [Low-Latency HTTP Live Streaming](https://tools.ietf.org/html/draft-pantos-hls-rfc8216bis-07) depends on current HTTP/2 dependencies and weights, and if it is to switch to the new scheme, client needs to tell if the server supports priority. In case priority isn't supported, client would disable low-latency features and fallback to regular HLS.",
       "createdAt": "2020-09-27T20:46:49Z",
-      "updatedAt": "2020-10-01T07:59:12Z",
+      "updatedAt": "2020-10-08T00:07:59Z",
       "closedAt": null,
       "comments": [
         {
@@ -30629,6 +30692,97 @@
           "body": "@LPardue \r\n>> Not anticipating someone defining another prioritization scheme is a poor excuse not to plan for it.\r\n> \r\n> I did the thought experiment and wrote a candidate design. I didn't like the complexity this added to the protocol.\r\n\r\nI think that there is a distinction between having a signal and having a plan.\r\n\r\nWhile it is true that we do not have a signal to indicate support for extensible priorities, it does not mean that the new scheme is unextensible or replaceable. If there becomes a necessity, people can define new parameters to extend the scheme, or define new set of header fields / frames that would supersede the extensible priorities.\r\n\r\nRegarding if it would be a good idea to define a signal indicating support for extensible priorities _now_, under the premise that it would be used by the client to change it's behavior, I would reiterate what others (including me) have pointed out. Don't do that, because recognizing the prioritization signal does not mean that the server would (can) obey to those signals sent by the client.\r\n\r\nThe hard lesson we learned from HTTP/2 is that many servers do not (correctly) implement the prioritization scheme. We have seen poor performance due to that. That's why we are introducing a new scheme that is conservative, that would not lead to unnecessarily bad performance even when there are issues within the endpoints.",
           "createdAt": "2020-09-30T12:26:57Z",
           "updatedAt": "2020-10-01T07:59:12Z"
+        },
+        {
+          "author": "mnot",
+          "authorAssociation": "MEMBER",
+          "body": "@roger-on-github have you considered putting a signal inside the manifest?",
+          "createdAt": "2020-10-07T06:35:10Z",
+          "updatedAt": "2020-10-07T06:35:10Z"
+        },
+        {
+          "author": "roger-on-github",
+          "authorAssociation": "NONE",
+          "body": "Responding collectively:\r\n\r\nI agree with @LPardue that it's difficult to have this discussion without a concrete proposal. So I've created a PR with a proposed design here: https://github.com/httpwg/http-extensions/pull/1283\r\n\r\nTo address the concern raised by @kazuho , my proposal does not require a promise of priority support, only an acknowledgment that a requested prioritization was applied to a particular response.\r\n\r\n@mnot : asking intermediaries to change their delivery behavior based on deep inspection of the response is not something I considered, no. Is that a recommended pattern for HTTP delivery these days? Do you know of any examples that have achieved wide adoption (i.e. by a broad range of CDNs)? It seems like a layer violation to me.",
+          "createdAt": "2020-10-07T18:22:22Z",
+          "updatedAt": "2020-10-07T18:22:22Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thanks for the proposal @roger-on-github .\r\n\r\nIn a nutshell it defines a new parameter `ap` that is mandatory and attests to the server having applied something.\r\n\r\nThe problem I have with that design it that, as an implementer of an HTTP/3 stack, I depend on the QUIC transport to manage bandwidth allocation. My server is dependent on both the behaviour of the local stack, the client's flow control (stream and connection) and retransmission logic. All of those things affect how the client could perceive bandwidth usage over some time period, and they are things that happen somewhere that is not exposed to my serving application at the time I emit the response header.\r\n\r\nIt is unfair to say that this server has not applied the priority signal. It will most likely do what the client asked for. If the client is going to measure bandwidth allocation and make informed decisions for future requests, I'm not sure the value of this parameter.\r\n\r\nThis new parameter also introduces a downside. Currently the response header is defined as `A server uses it to inform the client that the priority was overwritten`. So in the conventional case where a server follows the client signal, we would not need to generate a response header at all. The new parameter would require the header to be sent if the priority was applied.",
+          "createdAt": "2020-10-07T18:34:16Z",
+          "updatedAt": "2020-10-07T18:37:42Z"
+        },
+        {
+          "author": "roger-on-github",
+          "authorAssociation": "NONE",
+          "body": "The applied parameter does not attest anything more than the application of the requested prioritization to the scheduling logic at the HTTP level. It is understood that in exceptional cases the vagaries of the underlying transport can change the effective outcome. That does not negate the value of the server scheduling, nor the client's decision to ask for it.\r\n\r\nI agree that always adding the response header adds a minor cost. If the consensus here is that this cost significant, my proposal could be modified to add a second (request) parameter that requests this acknowledgment (or a SETTING that requests that behavior).",
+          "createdAt": "2020-10-07T18:47:30Z",
+          "updatedAt": "2020-10-07T18:50:06Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I disagree that this is an exceptional case. I delegate stream scheduling to the QUIC transport layer implementation, which abstracts how it works. I will feed the transport as fast as I can. I don't know what claim my HTTP layer can make. ",
+          "createdAt": "2020-10-07T18:55:21Z",
+          "updatedAt": "2020-10-07T18:55:21Z"
+        },
+        {
+          "author": "roger-on-github",
+          "authorAssociation": "NONE",
+          "body": "How does your implementation behave when two files are requested, both are immediately available, and a priority of incremental=0 is requested for both?",
+          "createdAt": "2020-10-07T18:57:35Z",
+          "updatedAt": "2020-10-07T18:57:35Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It's worth highlighting that H3 differs from H2 in that *stream-based* payload is subject to flow control and retransmission. And so to keep the transport simple, all stream contents are equally prioritised. H2 typically focused on DATA frames, which correlate to response payload only.\r\n\r\nSo taking 2 requests with urgency=3 and incremental=0. The transport offers a larger urgency space for non-response streams. Extensible priority urgency fits in the middle of that space.\r\n\r\nFor the given example, the transport will:\r\n\r\nAlways prioritise trying to send on H3 control streams.\r\nThen attempt to send response data on streams in the order they were generated.\r\n\r\nThe H3 layer can only write as much data to a stream as there is flow control. So if, for example, the client stopped reading the response on stream 0, the stream would become application blocked. The transport would then move onto stream 4 in order to keep the pipe occupied.\r\n\r\nEven if the client wasn't behaving weird. It is possible that packets that carry Window updates from client to server get lost. And so the server is quite dependent on its view of window size at any instant. ",
+          "createdAt": "2020-10-07T19:33:42Z",
+          "updatedAt": "2020-10-07T19:33:42Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The proposed `ap` parameter can also only apply to the mandatory parameters (because unknown extensions are ignored). So its usefulness is quite restricted.\r\n\r\nBut I'm also concerned about how it would interplay with extensions. For instance, I have a candidate, non-published, response extension parameter that would allow refining how a server sends chunks. Do I tell the client I am not applying things precisely as asked nd risk it taking the wrong action? It seems I'd have an incentive to mask the details.",
+          "createdAt": "2020-10-07T19:48:38Z",
+          "updatedAt": "2020-10-07T19:48:38Z"
+        },
+        {
+          "author": "roger-on-github",
+          "authorAssociation": "NONE",
+          "body": "Regarding H3: flow control is managed (or at least influenced) by the client. So it is possible that a sufficiently advanced client with a knowledge of the expected (approximate) size of the payloads could arrange things so that substantially all of the segment1 bytes were put onto the wire before any segment2 bytes, and (statistically) the client will receive all the segment1 bytes first.\r\n\r\n(And in fact if that is not possible, then it is likely that H3 is not a suitable protocol for this kind of application, or any application where performance depends on strict delivery ordering.)\r\n\r\nRegarding extensibility: would you prefer a design where the client simply requests explicit acknowledgement of the applied priority, whatever it ends up being? In other words, a request parameter that triggers a mandatory attachment of a priority header to the response.",
+          "createdAt": "2020-10-07T20:05:26Z",
+          "updatedAt": "2020-10-07T20:05:26Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "A H2 client is also in control of stream receive windows, so it could employ such a strategy too. Think of H2 like a meta-transport in this respect. You'd probably be best served by conservative initial stream windows (which are common across all streams in H2 and H3 ) and then aggressive window growing for the stream of upmost importance. Knowledge of the resource size could help but might not even be necessary. The tradeoff is that you block the other streams and potentially starve the pipe if the first request is not available for some reason. But I totally get that video streaming has different demands for resource loading compared to the web. HoL avoidance features might mess you up, while they really help other HTTP-poweted workloads.\r\n\r\nIn my experience, one problem we have is that H2 and H3 settings are made quite generically. A browser that tried to adopt the above strategies might suffer regressions. However, they can adopt different strategies for managing the pipe; for example being clever with request ordering and batching (e.g not making all requests concurrently).\r\n\r\n",
+          "createdAt": "2020-10-07T20:37:20Z",
+          "updatedAt": "2020-10-07T20:37:20Z"
+        },
+        {
+          "author": "kazuho",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@roger-on-github Thank you for the concrete proposal.\r\n\r\n> @mnot : asking intermediaries to change their delivery behavior based on deep inspection of the response is not something I considered, no. Is that a recommended pattern for HTTP delivery these days? Do you know of any examples that have achieved wide adoption (i.e. by a broad range of CDNs)? It seems like a layer violation to me.\r\n\r\nWould that concern evaporate if we use a dedicated URI (i.e. something like `/.well-known/llhls`; cf. [RFC 5785])(https://tools.ietf.org/html/rfc5785)) to communicate the server capabilities?\r\n\r\nI am not fully sure if using an end-to-end signal (a HTTP response) is the best solution, as each hop might have different capabilities, but I think that using a dedicated resource is no worse than using a HTTP response header as proposed in #1283. In fact, as prioritization is about choosing what to send when multiple responses compete on _one_ connection, having one signal per connection is better IMO.",
+          "createdAt": "2020-10-07T23:29:05Z",
+          "updatedAt": "2020-10-07T23:29:05Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "And/or you could put it in the DNS",
+          "createdAt": "2020-10-07T23:39:31Z",
+          "updatedAt": "2020-10-07T23:39:31Z"
+        },
+        {
+          "author": "roger-on-github",
+          "authorAssociation": "NONE",
+          "body": "I don't think that using a well-known URI scales very well. Content providers often offer the same content to both old and new clients, via both HTTP 1.1 and H2 (and maybe some day H3) using the same directory structure but different protocol implementations. It's probably not reasonable to ask a CDN to support extensible priorities on all three, or to perform directory magic to insert a dummy path element against protocols that support a feature. And if you add more than one such feature the complexity scales geometrically. That sounds much worse than an HTTP response header to me, from the point of view of someone trying to implement the whole system.\r\n\r\nThere are a few problems with \"one signal per connection.\" First, it's more complex, because that signal has to encapsulate the entire priority tree for all active requests. Second, it would require new terminology not currently defined. And third, it would need to be refreshed each time a new request became active or an old request finished to remain accurate.\r\n\r\nI will write up an alternate design based on the earlier feedback from @LPardue and share it soon.",
+          "createdAt": "2020-10-08T00:07:59Z",
+          "updatedAt": "2020-10-08T00:07:59Z"
         }
       ]
     },
@@ -66599,7 +66753,7 @@
       "labels": [],
       "body": "Fix: #1238 \r\n\r\n@yoavweiss \r\n@igrigorik \r\n@davidben ",
       "createdAt": "2020-08-12T14:29:56Z",
-      "updatedAt": "2020-10-05T09:52:57Z",
+      "updatedAt": "2020-10-06T06:43:07Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "a3c00db173ed74703dd0d0b6d16d72add63cd761",
@@ -66624,6 +66778,20 @@
           "body": "This LGTM based on the discussion in #1238\r\n\r\n@mnot - thoughts on landing this at this point? Note that https://github.com/httpwg/http-extensions/pull/1282 means we'd probably need to republish a draft anyway.",
           "createdAt": "2020-10-05T09:52:57Z",
           "updatedAt": "2020-10-05T09:52:57Z"
+        },
+        {
+          "author": "mnot",
+          "authorAssociation": "MEMBER",
+          "body": "I think you can do both of these changes in AUTH48, but you should send an e-mail to the list giving folks a heads-up first. Note that because the draft is now at the RFC Editor, publishing a new revision probably isn't going to help.",
+          "createdAt": "2020-10-06T03:15:01Z",
+          "updatedAt": "2020-10-06T03:15:01Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Am 06.10.2020 um 05:15 schrieb Mark Nottingham:\n> I think you can do both of these changes in AUTH48, but you should send\n> an e-mail to the list giving folks a heads-up first. Note that because\n> the draft is now at the RFC Editor, publishing a new revision probably\n> isn't going to help.\n> ...\n\nFWIW, and IMHO, publishing a new version is more transparent, and *will*\nwork if the RPC hasn't started editing yet, and if the AD is ok with it.\n\nBest regards, Julian\n",
+          "createdAt": "2020-10-06T06:43:07Z",
+          "updatedAt": "2020-10-06T06:43:07Z"
         }
       ],
       "reviews": []
@@ -67647,13 +67815,13 @@
       ],
       "body": "## This PR\r\n\r\n- obsoletes digest parameters",
       "createdAt": "2020-09-07T16:46:16Z",
-      "updatedAt": "2020-09-27T10:25:22Z",
+      "updatedAt": "2020-10-07T20:02:38Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
-      "baseRefOid": "01511073277183a21344e8a22ee59eacfb6e5777",
+      "baseRefOid": "4490f41d13ca41058c36faa0a120364c17d1df30",
       "headRepository": "httpwg/http-extensions",
       "headRefName": "ioggstream-850-no-parameters",
-      "headRefOid": "1000200cea51072cdfa71296ebfebecef6ec772f",
+      "headRefOid": "1fc06ff470ddc8dfef3ee1d209173065a45d9509",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -67676,7 +67844,7 @@
               "originalPosition": 60,
               "body": "These paragraphs are confusing under the section title. I think it would be clearer to \r\n\r\n1) Take what's in the first paragraph and combine it with what's in section 12.2 and 12.3. I suggest we do that in a different PR\r\n\r\n2) Rename the section to something like \"Paramaterising digest-algorithms\"\r\n\r\n3) Take the second paragraph and explain a little more why the old means was \"bad or insecure\". For example, what could have gone wrong? That makes the problem statement clearer so that the solution of embedding parameters make more sense to anyone considering what to do.\r\n",
               "createdAt": "2020-09-08T17:59:23Z",
-              "updatedAt": "2020-09-08T17:59:23Z"
+              "updatedAt": "2020-10-07T19:21:17Z"
             }
           ]
         },
@@ -67696,7 +67864,47 @@
               "originalPosition": 60,
               "body": "Sure, I'll move \r\n```\r\nAlgorithm agility is achieved establishing the IANA Digest Algorithm Values registry,\r\nand adding it the \"Status\" field making it possible to deprecate and obsolete insecure algorithms.\r\n```\r\nto another PR!",
               "createdAt": "2020-09-27T10:25:22Z",
-              "updatedAt": "2020-09-27T10:25:22Z"
+              "updatedAt": "2020-10-07T19:21:17Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTA0MDk1ODQ2",
+          "commit": {
+            "abbreviatedOid": "1000200"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-10-07T17:11:01Z",
+          "updatedAt": "2020-10-07T17:11:02Z",
+          "comments": [
+            {
+              "originalPosition": 60,
+              "body": "I propose to move all this section in {{obsolete-parameters}} as removing parameters we do not have security considerations.",
+              "createdAt": "2020-10-07T17:11:01Z",
+              "updatedAt": "2020-10-07T19:21:17Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTA0MjIzNDMz",
+          "commit": {
+            "abbreviatedOid": "1fc06ff"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-10-07T20:02:38Z",
+          "updatedAt": "2020-10-07T20:02:38Z",
+          "comments": [
+            {
+              "originalPosition": 60,
+              "body": "About combining 12.2 and 12.3, I re-read rfc 8126 and iiuc those sections should remain unchanged (\"keep iana considerations for iana\")... Let's discuss it in https://github.com/httpwg/http-extensions/pull/1284",
+              "createdAt": "2020-10-07T20:02:38Z",
+              "updatedAt": "2020-10-07T20:02:38Z"
             }
           ]
         }
@@ -68805,7 +69013,7 @@
       "labels": [],
       "body": "Originally in #1235",
       "createdAt": "2020-10-01T19:24:19Z",
-      "updatedAt": "2020-10-06T00:04:10Z",
+      "updatedAt": "2020-10-07T23:15:39Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "3c4d5d7a1e996b869b3efd96f0faf80217c3c798",
@@ -68857,6 +69065,66 @@
               "updatedAt": "2020-10-06T00:04:10Z"
             }
           ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTA0MDIwOTY4",
+          "commit": {
+            "abbreviatedOid": "fb66293"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-10-07T15:44:54Z",
+          "updatedAt": "2020-10-07T15:44:55Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "@richanna can we split the sentences over multiple lines? I'd find it easier to discuss them, eg.\r\n\r\n```suggestion\r\nThe verifier MUST examine the signature's Creation Time and Expiration Time and evaluate whether they meet the verifier's requirements.  These requirements may vary depending on the use case. \r\nWhen comparing Creation Time and/or Expiration Time to a timestamp obtained from another source (e.g., testing that the Expiration Time is later than the local time at the verifier), the verifier MAY allow for some variability due to clock skew between the two timestamp sources (e.g., the signer and the verifier). \r\nThe verifier MAY impose its own maximum age limits, and reject signatures that are too old (i.e., have a Creation Time too far in the past) regardless of whether the signer gave the signatures an Expiration Time.\r\n```",
+              "createdAt": "2020-10-07T15:44:54Z",
+              "updatedAt": "2020-10-07T15:44:55Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTA0MDU5MTg2",
+          "commit": {
+            "abbreviatedOid": "fb66293"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-10-07T16:26:38Z",
+          "updatedAt": "2020-10-07T16:26:38Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "I'd rephrase with something like the following. the 2119 keywords can be tuned, and the rest is just an example... your feedback is welcome!\r\n\r\nThe passage below ensures the verifier cannot take action beyond the will of the signer.\r\n\r\n```\r\n[addition] To take into account clock skew, the signer MAY provide the NotBefore Time parameter\r\nindicating that the signature is valid prior to the Creation Time.\r\n\r\nThe verifier MUST NOT process a signature where:\r\n- the Expiration Time is in the past;\r\n- the lowest value between NotBefore and Creation Time is in the future.\r\n```\r\n\r\nThis second sentence ensures that the verifier is free to impose further requirements that may relate - but not limit to - Time parameters, thus giving more freedom to invalidate to the verifier that the previous version:\r\n\r\n```\r\nThe verifier MAY impose further requirements depending on the use case, including:\r\n- maximum age limits;\r\n- constraints between Creation Time and Exipration Time, or on other signature parameter values;\r\n- (insert here some examples).\r\n```\r\n\r\nSome guidance for implementers about how to communicate further requirements could be helpful, because providing extensive information on why a signature is invalid may expose the peers to attacks\r\n\r\n```\r\nThose requirements SHOULD be communicated out-of-band or when it is safe to do so MAY be communicated on the wire (eg. in the response payload or headers).\r\n```\r\n\r\n",
+              "createdAt": "2020-10-07T16:26:38Z",
+              "updatedAt": "2020-10-07T16:27:34Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTA0MzI2OTgw",
+          "commit": {
+            "abbreviatedOid": "fb66293"
+          },
+          "author": "jyasskin",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-10-07T23:05:12Z",
+          "updatedAt": "2020-10-07T23:15:39Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "I don't have a firm suggestion here, but here are a couple thoughts in the hope that they might help:\r\n\r\n* The discussion of \"the verifier's requirements\" might really be talking about how this header is embedded into a higher-level protocol. The CBOR spec explicitly puts [constraints on CBOR-based protocols](https://tools.ietf.org/id/draft-ietf-cbor-7049bis-16.html#name-creating-cbor-based-protoco) and mandates that they specify certain things. For example [\"The first layer that does process the semantics of an invalid CBOR item MUST take one of two choices: \u2026. A CBOR-based protocol MUST specify which of these options its decoders take\"](https://tools.ietf.org/id/draft-ietf-cbor-7049bis-16.html#name-validity-of-items). Maybe this spec could just say that\r\n    > A protocol using HTTP Message Signatures MUST define how it uses \r\n    >\r\n    > 1. the verifier's current time,\r\n    > 1. the verifier's estimate of any clock skew between the verifier and the signer,\r\n    > 1. the Creation Time, and\r\n    > 1. the Expiration Time \r\n    >\r\n    > to determine whether the signature is currently valid.\r\n\r\n* Handling clock skew is probably more complicated than just offsetting the verifier's current time, and checking that the new time is between the creation and expiration times. Clock skew is inherently uncertain and the verifier's estimate of it might be vulnerable to attack, especially if the verifier is a client. The signed exchange [spec](https://wicg.github.io/webpackage/loading.html#validating-signature) currently says clients may adjust the creation time for skew but mustn't adjust the expiration time. The current Chromium implementation [doesn't adjust for skew at all](https://source.chromium.org/chromium/chromium/src/+/master:content/browser/web_package/signed_exchange_signature_verifier.cc;l=213;drc=7a942548e0af7397f79bf07b4ca03ade10d04019). Leaving it open for protocols to experiment with, as the current PR text does, is probably the right answer for this PR. \r\n\r\n* My reading of [JWT's \"nbf\"](https://tools.ietf.org/html/rfc7519#section-4.1.5) indicates that they don't take the earliest of the not-before and the creation times when comparing to the current time. Instead, it looks like the [\"Issued At\"](https://tools.ietf.org/html/rfc7519#section-4.1.6) value is used for allowing a signature to be created some time before it's supposed to be valid. The signer also can't prevent the verifier from using whatever \"now\" value it wants, so I don't think it's worthwhile to add complexity to attempt to prevent that.\r\n\r\n* I'm intrigued by the suggestion that saying why a signature was invalid could help attackers. Saying \"when it is safe to do so\" probably doesn't help protocol designers much, but it could be useful to have some more detail in the Security Considerations. On the other hand, most of the time, saying \"the requirements are in the higher-level protocol definition\" is likely to be enough.\r\n\r\n* I like the examples of constraints verifiers might impose, like \"MAY impose its own maximum age limits\".",
+              "createdAt": "2020-10-07T23:05:12Z",
+              "updatedAt": "2020-10-07T23:15:39Z"
+            }
+          ]
         }
       ]
     },
@@ -68865,7 +69133,7 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDk3NDczNDAy",
       "title": "digest-headers: update to semantics-12",
       "url": "https://github.com/httpwg/http-extensions/pull/1281",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "reschke",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
@@ -68875,18 +69143,28 @@
       ],
       "body": "",
       "createdAt": "2020-10-04T17:59:22Z",
-      "updatedAt": "2020-10-04T18:00:47Z",
+      "updatedAt": "2020-10-07T15:42:15Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "ec43ebf7444441b4640a0f56d89ef331d5a46715",
       "headRepository": "httpwg/http-extensions",
       "headRefName": "reschke-patch-1",
       "headRefOid": "4b5e89977bb23f9a91332ddf06550a0624c8be20",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "closedAt": "2020-10-07T15:42:06Z",
+      "mergedAt": "2020-10-07T15:42:06Z",
+      "mergedBy": "ioggstream",
+      "mergeCommit": {
+        "oid": "4490f41d13ca41058c36faa0a120364c17d1df30"
+      },
+      "comments": [
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@reschke thanks!!! :tada: ",
+          "createdAt": "2020-10-07T15:42:15Z",
+          "updatedAt": "2020-10-07T15:42:15Z"
+        }
+      ],
       "reviews": [
         {
           "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTAxNjQ1NDk2",
@@ -68922,6 +69200,119 @@
       "headRepository": "yoavweiss/http-extensions",
       "headRefName": "client_hints_unclosed_parens",
       "headRefOid": "45c20991efd24d8289f73d3847eceb20e41e0ac5",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 1283,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDk5NDI4Mzgx",
+      "title": "Add definition and semantics of applied parameter.",
+      "url": "https://github.com/httpwg/http-extensions/pull/1283",
+      "state": "OPEN",
+      "author": "roger-on-github",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Define an 'applied' parameter for Priority HTTP Header Field (responses only). The presence of this parameter indicates that a Priority HTTP Header Field was recognized in the request. Its value indicates that the requested prioritization was applied to the scheduling of the response (or not).\r\n\r\nThis parameter will be useful to clients whose optimal behavior depends on whether prioritization controls are available. For example, consider a media client that plays a live stream by successively downloading and displaying short media segments as they are produced. The standard model is to assume a connection whose bandwidth is just slightly above the media bit rate. If each media segment is 400ms, the RTT is 100ms, and the client is playing 3 segments behind the live edge, overall performance can be improved by pipelining successive segment requests to amortize the RTT cost -- but only if the remote end does not send responses in parallel (incremental=0). If responses are sent in parallel then the next segment to play will share bandwidth with subsequent response(s) and take longer than 400ms to arrive, causing playback to stall. A client that requests pipelining and discovers that it is not available can then issue future requests in serial, without pipelining them.",
+      "createdAt": "2020-10-07T18:10:56Z",
+      "updatedAt": "2020-10-08T00:12:20Z",
+      "baseRepository": "httpwg/http-extensions",
+      "baseRefName": "master",
+      "baseRefOid": "4490f41d13ca41058c36faa0a120364c17d1df30",
+      "headRepository": "roger-on-github/http-extensions",
+      "headRefName": "add-applied",
+      "headRefOid": "930a321d357c52b6f42479b043d653f811afd79b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTA0MzM1MDY5",
+          "commit": {
+            "abbreviatedOid": "930a321"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-10-07T23:27:24Z",
+          "updatedAt": "2020-10-07T23:27:27Z",
+          "comments": [
+            {
+              "originalPosition": 60,
+              "body": "What if the parameter is not understood?\r\n\r\nWhat if only some parameters were respected?\r\n\r\nWhat if the response carries different priority information intentionally?",
+              "createdAt": "2020-10-07T23:27:24Z",
+              "updatedAt": "2020-10-07T23:27:27Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTA0MzQ5NTgz",
+          "commit": {
+            "abbreviatedOid": "930a321"
+          },
+          "author": "roger-on-github",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-10-08T00:11:02Z",
+          "updatedAt": "2020-10-08T00:11:02Z",
+          "comments": [
+            {
+              "originalPosition": 60,
+              "body": "If the parameter is not understood then it cannot be applied, by definition, so applied would be false. Similarly if only some parameters were respected, or if the response intentionally applied different values.",
+              "createdAt": "2020-10-08T00:11:02Z",
+              "updatedAt": "2020-10-08T00:11:02Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTA0MzQ5OTY5",
+          "commit": {
+            "abbreviatedOid": "930a321"
+          },
+          "author": "roger-on-github",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-10-08T00:12:19Z",
+          "updatedAt": "2020-10-08T00:12:20Z",
+          "comments": [
+            {
+              "originalPosition": 60,
+              "body": "FYI, there's a discussion of this going on in the Issues section, https://github.com/httpwg/http-extensions/issues/1274",
+              "createdAt": "2020-10-08T00:12:19Z",
+              "updatedAt": "2020-10-08T00:12:20Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 1284,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDk5NDg1NTQ3",
+      "title": "Achieving algorithm agility. See #1250",
+      "url": "https://github.com/httpwg/http-extensions/pull/1284",
+      "state": "OPEN",
+      "author": "ioggstream",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "## This PR\r\n\r\nDescribes how to achieve algorithm agility:\r\n\r\n- add Status to IANA table;\r\n- use Want-Digest to negotiate newer algos\r\n- use multiple digest values while transitioning to new algos (see https://tools.ietf.org/html/rfc7696#section-2.3 but I didn't cite it as I don't think it is worth unless we want to add MANDATORY algorithms)\r\n\r\n## Note:\r\n\r\nI didn't merge this section with IANA Considerations because of [Keep IANA Considerations for IANA]( https://tools.ietf.org/html/rfc8126#section-1.1)",
+      "createdAt": "2020-10-07T20:02:23Z",
+      "updatedAt": "2020-10-07T20:42:43Z",
+      "baseRepository": "httpwg/http-extensions",
+      "baseRefName": "master",
+      "baseRefOid": "4490f41d13ca41058c36faa0a120364c17d1df30",
+      "headRepository": "httpwg/http-extensions",
+      "headRefName": "ioggstream-1250-algorithm-agility",
+      "headRefOid": "0c933f004c4e3dd3a4c78dc8e20dc79a583dd7f5",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
